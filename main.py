@@ -1,11 +1,6 @@
 from Phase1 import *
-#from Phase2 import Back_tracking
+from Phase2 import Back_tracking
 
-def status(variables):
-    for v in variables[1:]:
-        print(v.domain)
-        print(v.conflicts)
-        print()
 
 def main():
 
@@ -26,13 +21,14 @@ def main():
         variables[conflicts[0]].conflicts.append(conflicts[1])
         variables[conflicts[1]].conflicts.append(conflicts[0])
     
-    status(variables)
-    
     csp = CSP(variables, N)
 
     assigments : dict = Back_tracking({}, csp)
 
-    for item in assigments.items():
-        print(' '.join(item))
+    res = list(assigments.items())
+    res.sort(key=lambda x: x[0])
+    res = [str(i[1]) for i in res]
+    
+    print(' '.join(res))
 
 main()
