@@ -29,7 +29,6 @@ def AC3(csp:CSP): # returns false on failure and true on success
         for right in left.conflicts:
             Worklist.append((left,csp.variables[right]))
 
-    All_Arcs = copy(Worklist)
     while len(Worklist) != 0:
         arc = Worklist[0]
         Worklist.remove(Worklist[0])

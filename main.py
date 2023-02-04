@@ -23,6 +23,8 @@ def main():
     
     csp = CSP(variables, N)
 
+    # status(csp.variables)
+
     assigments : dict = Back_tracking({}, csp)
 
     res = list(assigments.items())

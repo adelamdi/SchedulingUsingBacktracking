@@ -1,6 +1,7 @@
 from Phase1 import *
 from queue import PriorityQueue
 from copy import copy
+from Phase3 import AC3
 
 def Back_tracking(assignment:dict, csp:CSP) -> dict:
     """returns an assigment dictionary or None"""
@@ -8,15 +9,18 @@ def Back_tracking(assignment:dict, csp:CSP) -> dict:
     var_index = MRV(assignment, csp)
     var = csp.variables[var_index]
     
-    for value in var.domain:
+    for value in LCV(var, csp):
         csp0 = copy(csp)
-
+        
         assignment[var_index] = value
         if is_complete(assignment, csp):
             return assignment
 
         if not forward_checking(var_index, value, csp0):
             return None
+
+        # if not AC3(csp0):
+        #     return None
         
         result = Back_tracking(assignment, csp0)
         if result != None:
@@ -52,7 +56,7 @@ def MRV(assignment:dict, csp:CSP) -> int:
     
     return pq.get(0)[1]
 
-def LCV(var:Variable, csp:CSP) -> PriorityQueue:
+def LCV(var:Variable, csp:CSP) -> list[int]:
     queue = {}
 
     for value in var.domain:
@@ -62,6 +66,7 @@ def LCV(var:Variable, csp:CSP) -> PriorityQueue:
             if value in csp.variables[vari].domain :
                 sum += 1
         queue.update({value:sum})
-    #Sort Queue Dictionary to find minimum
+    #Sort Queue Dictionary
     sortedqueue = sorted(queue.items(), key=lambda x:x[1])
-    return(list(sortedqueue)[0]) 
+    res = [value[0] for value in sortedqueue]
+    return res 
