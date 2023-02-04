@@ -27,6 +27,10 @@ def main():
 
     assigments : dict = Back_tracking({}, csp)
 
+    if assigments == None:
+        print("No")
+        return
+
     res = list(assigments.items())
     res.sort(key=lambda x: x[0])
     res = [str(i[1]) for i in res]
