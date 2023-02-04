@@ -7,17 +7,17 @@ def Back_tracking(assignment:dict, csp:CSP) -> dict:
 
     var_index = MRV(assignment, csp)
     var = csp.variables[var_index]
+    
     for value in var.domain:
         csp0 = copy(csp)
 
         assignment[var_index] = value
-
         if is_complete(assignment, csp):
             return assignment
 
         if not forward_checking(var_index, value, csp0):
             return None
-
+        
         result = Back_tracking(assignment, csp0)
         if result != None:
             return result
@@ -52,7 +52,16 @@ def MRV(assignment:dict, csp:CSP) -> int:
     
     return pq.get(0)[1]
 
-# def LCV(var:Variable, csp:CSP) -> PriorityQueue:
-#     pq = PriorityQueue()
+def LCV(var:Variable, csp:CSP) -> PriorityQueue:
+    queue = {}
 
-#     for value in var.domain:
+    for value in var.domain:
+        # Choose that one who eliminate fewest values in other variables
+        sum = 0
+        for vari in var.conflicts:
+            if value in csp.variables[vari].domain :
+                sum += 1
+        queue.update({value:sum})
+    #Sort Queue Dictionary to find minimum
+    sortedqueue = sorted(queue.items(), key=lambda x:x[1])
+    return(list(sortedqueue)[0]) 
