@@ -1,5 +1,6 @@
 from Phase1 import *
 from Phase2 import *
+from copy import copy
 
 
 
@@ -20,3 +21,23 @@ def Arc_Reduction(left:Variable,right:Variable):
             Is_Changed = True
     
     return Is_Changed
+
+def AC3(csp:CSP): # returns false on failure and true on success
+    # create a worklist and fill it with all of the arcs
+    Worklist = []
+    for left in csp.variables:
+        for right in left.conflicts:
+            Worklist.append((left,csp.variables[right]))
+
+    All_Arcs = copy(Worklist)
+    while len(Worklist) != 0:
+        arc = Worklist[0]
+        left = arc[0]
+        right = arc[1]
+        if Arc_Reduction(left,right):
+            if len(left.domain) == 0:
+                return False #
+            else:
+                for Candidate_Arc in left.conflicts:
+                    Worklist.append((csp.variables[Candidate_Arc],left))
+                    
