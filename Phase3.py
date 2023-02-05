@@ -1,8 +1,4 @@
 from Phase1 import *
-from Phase2 import *
-from copy import copy
-
-
 
 # left and right are variables 
 def Arc_Reduction(left:Variable,right:Variable):
@@ -40,4 +36,5 @@ def AC3(csp:CSP): # returns false on failure and true on success
             else:
                 for Candidate_Arc in left.conflicts:
                     Worklist.append((csp.variables[Candidate_Arc],left))
+    return True  # there wasn't any empty domain
                     
